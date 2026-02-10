@@ -16,7 +16,7 @@ public class Usuario {
 
         }
         else{
-            throw new UsuarioInvalidoException("Usuario invalido");
+            throw new UsuarioInvalidoException("Email invalido");
         }
     }
 
@@ -25,7 +25,7 @@ public class Usuario {
 
         }
         else{
-            throw new UsuarioInvalidoException("Usuario invalido");
+            throw new UsuarioInvalidoException("Numero de socio invalido");
         }
     }
 
@@ -48,7 +48,7 @@ public class Usuario {
         if(fecha.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}")){
             String []array=fecha.split("/");
             fechaInicioSancion=LocalDate.of(Integer.parseInt(array[2]),Integer.parseInt(array[1]),Integer.parseInt(array[0]));
-            fechaFinSancion.plusDays(diasSancion);
+            fechaFinSancion=fechaInicioSancion.plusDays(diasSancion);
             sancionado=true;
         }
         else{
@@ -67,7 +67,7 @@ public class Usuario {
     public String toString() {
         String mensaje= "Nombre: "+nombre+" email: "+email+" numero de socio: "+numeroSocio+" fecha de registro: "+fechaRegistro+" estado de la sancion: "+estaSancionado();
         if(estaSancionado()){
-            mensaje+="Su sancion acaba en la fecha: "+fechaFinSancion;
+            mensaje+=" Su sancion acaba en la fecha: "+fechaFinSancion;
         }
         return mensaje;
     }
