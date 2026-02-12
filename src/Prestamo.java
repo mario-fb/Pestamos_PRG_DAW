@@ -61,6 +61,16 @@ public class Prestamo {
     public String getCodigoLibro(){
         return codigoLibro;
     }
+    public LocalDate getFechaDevolucionPrevista(){
+        return fechaDevolucionPrevista;
+    }
+    public void setFechaDevolucionReal(LocalDate fechadevolucion){
+        this.fechaDevolucionReal=fechadevolucion;
+    }
+    public Usuario getSocio(){
+        return socio;
+    }
+
     @Override
     public String toString(){
         String mensaje= "El codigo del libro es: "+codigoLibro+" el titulo del libro es: "+tituloLibro+" El usuario que ha realizado el prestamo es: "+socio.toString()+" La fecha del prestamo es "+

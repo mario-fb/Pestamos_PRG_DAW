@@ -10,7 +10,12 @@ public class Usuario {
     private boolean sancionado;
     private LocalDate fechaFinSancion;
 
-
+    public void aniadirDiasSancion(long dias){
+        fechaFinSancion.plusDays(dias);
+    }
+    public String getNumeroSocio(){
+        return numeroSocio;
+    }
     public void validarEmail()throws  UsuarioInvalidoException{
         if(email.matches("\\w+@\\w+\\.\\w+")){
 
@@ -28,7 +33,9 @@ public class Usuario {
             throw new UsuarioInvalidoException("Numero de socio invalido");
         }
     }
+    public Usuario(){
 
+    }
     public Usuario(String nombre, String email, String numeroSocio, LocalDate fechaRegistro)throws UsuarioInvalidoException{
         this.nombre=nombre;
         this.email=email;
@@ -54,6 +61,13 @@ public class Usuario {
         else{
             System.out.println("El formato de fecha no es correcto");
         }
+    }
+
+    public void sancionarAMano(int dias, LocalDate inicioSancion){
+
+        fechaFinSancion=inicioSancion.plusDays(dias);
+        sancionado=true;
+
     }
 
     public void levantarSancion(){
