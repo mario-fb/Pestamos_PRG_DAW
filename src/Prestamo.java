@@ -34,11 +34,13 @@ public class Prestamo {
     public int calcularDiasRetraso(){
         int retraso=(int)(ChronoUnit.DAYS.between(fechaDevolucionPrevista,fechaDevolucionReal));
 
-        if (fechaDevolucionReal.isAfter(fechaDevolucionPrevista)) {
-                return retraso;
+        if (fechaDevolucionReal==null){
+            return (int)(ChronoUnit.DAYS.between(fechaDevolucionPrevista,LocalDate.now()));
         }
-
-        else if(estaRetrasado()==false){
+        else if (fechaDevolucionReal.isAfter(fechaDevolucionPrevista)){
+            return retraso;
+        }
+        else{
             return 0;
         }
     }
@@ -52,6 +54,12 @@ public class Prestamo {
         else{
             return true;
         }
+    }
+    public LocalDate getFechaDevolucionReal(){
+        return fechaDevolucionReal;
+    }
+    public String getCodigoLibro(){
+        return codigoLibro;
     }
     @Override
     public String toString(){
