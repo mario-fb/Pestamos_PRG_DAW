@@ -73,6 +73,7 @@ public class GestorBiblioteca {
                     }
                     else if(fechaDevolucion.isAfter(prestamos[i].getFechaDevolucionPrevista())){
                         long retraso= ChronoUnit.DAYS.between(prestamos[i].getFechaDevolucionPrevista(),fechaDevolucion);
+                        System.out.println("Dias de retraso: "+retraso);
                         prestamos[i].getSocio().aniadirDiasSancion(retraso);
                     }
                 }
