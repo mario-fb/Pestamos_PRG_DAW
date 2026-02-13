@@ -37,14 +37,19 @@ public class Usuario {
 
     }
     public Usuario(String nombre, String email, String numeroSocio, LocalDate fechaRegistro)throws UsuarioInvalidoException{
-        this.nombre=nombre;
-        this.email=email;
-        this.validarEmail();
+        if(nombre==null){
+            throw new UsuarioInvalidoException("El nombre no puede ser nulo");
+        }
+        else {
+            this.nombre = nombre;
+            this.email = email;
+            this.validarEmail();
 
-        this.numeroSocio=numeroSocio;
-        this.validarNumeroSocio();
+            this.numeroSocio = numeroSocio;
+            this.validarNumeroSocio();
 
-        this.fechaRegistro=fechaRegistro;
+            this.fechaRegistro = fechaRegistro;
+        }
     }
     public void sancionar(Scanner in){
         LocalDate fechaInicioSancion;
