@@ -3,6 +3,9 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
+
+
+
     public static void mostrarMenu(){
         System.out.println("=== SISTEMA GESTIÓN BIBLIOTECA ===");
         System.out.println("1) Registrar nuevo ususario");
@@ -18,7 +21,7 @@ public class Main {
         System.out.println("Selecciona una opción");
         return Integer.parseInt(in.nextLine());
     }
-    public static Usuario registrarNuevoUsuario(Scanner in) throws UsuarioInvalidoException{
+    public static Usuario registrarNuevoUsuario(Scanner in, GestorBiblioteca gestor) throws UsuarioInvalidoException, UsuarioRepetidoException{
         System.out.println("Nombre: ");
         String nombre=in.nextLine();
         System.out.println("Email: ");
@@ -71,7 +74,9 @@ public class Main {
         int anyo=Integer.parseInt(fechaSplit[2]);
         if(gestor.devolverLibro(codigoLibro, LocalDate.of(anyo,mes,dia))) {
             System.out.println("Libro devuelto");
-            System.out.println("Retraso: ");
+        }
+        else{
+            System.out.println("Libro no esta en lista");
         }
 
     }
@@ -87,7 +92,7 @@ public class Main {
 
     public static void mostrarPrestamos(GestorBiblioteca gestor){
             for (int i=0;i<200;i++){
-                if (gestor.getPrestamos()[i]!=null){
+                if (gestor.getPrestamos()[i]!=null && gestor.getPrestamos()[i].getDevuelto()){
                     System.out.println(gestor.getPrestamos()[i].toString());
                 }
             }
@@ -101,8 +106,15 @@ public class Main {
             }
     }
 
-    public static void actualizarSanciones(GestorBiblioteca gestor, Usuario usuario){
-
+    public static void actualizarSanciones(GestorBiblioteca gestor){
+        for (int i=0;i<50;i++){
+            if(gestor.getUsuarios()[i]!=null && gestor.getUsuarios()[i].estaSancionado()){
+                if (gestor.getUsuarios()[i].getFechaFinSancion() != null &&
+                        gestor.getUsuarios()[i].getFechaFinSancion().isBefore(LocalDate.now())) {
+                    gestor.getUsuarios()[i].levantarSancion();
+                }
+            }
+        }
 
     }
 
@@ -124,7 +136,7 @@ public class Main {
             switch (respuesta) {
                 case 1:
                     try {
-                        gestor.registrarUsuario(registrarNuevoUsuario(in));
+                        gestor.registrarUsuario(registrarNuevoUsuario(in, gestor));
                         System.out.println("Usuario correctamente registrado");
                         System.out.println("Presiona intro para continuar");
                     } catch (UsuarioInvalidoException uie) {
@@ -177,6 +189,10 @@ public class Main {
                     System.out.println("Presiona intro para continuar");
                     break;
                 case 7:
+                    actualizarSanciones(gestor);
+                    System.out.println("Sanciones actualizadas");
+                    System.out.println("Presiona intro para continuar");
+                    break;
 
                 default:
                     System.out.println("Elige una opcion del 1 al 8");
@@ -185,7 +201,7 @@ public class Main {
 
             }
                 catch (NumberFormatException nfe){
-                    System.out.println("No puedes no poner nada");
+                    System.out.println("No has escrito correctamente lo que se pedia");
                     System.out.println("Presiona intro para continuar");
                 }
             in.nextLine();

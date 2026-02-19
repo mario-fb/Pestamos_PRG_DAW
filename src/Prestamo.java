@@ -8,6 +8,15 @@ public class Prestamo {
     private LocalDate fechaPrestamo;
     private LocalDate fechaDevolucionPrevista;
     private LocalDate fechaDevolucionReal;
+    public boolean getDevuelto() {
+        return devuelto;
+    }
+
+    public void setDevuelto(boolean devuelto) {
+        this.devuelto = devuelto;
+    }
+
+    private boolean devuelto=false;
 
     public LocalDate getFechaPrestamo(){
         return fechaPrestamo;

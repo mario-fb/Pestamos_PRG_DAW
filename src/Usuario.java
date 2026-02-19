@@ -10,6 +10,10 @@ public class Usuario {
     private boolean sancionado;
     private LocalDate fechaFinSancion;
 
+    public LocalDate getFechaFinSancion() {
+        return fechaFinSancion;
+    }
+
     public void aniadirDiasSancion(long dias){
 
         if(!sancionado){

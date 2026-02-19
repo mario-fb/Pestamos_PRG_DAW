@@ -9,16 +9,18 @@ public class GestorBiblioteca {
     int numeroUsuarios;
     int numeroPrestamos;
 
+
     public GestorBiblioteca(){
         numeroUsuarios=0;
         numeroPrestamos=0;
     }
 
+
     public void registrarUsuario(Usuario u1) throws UsuarioRepetidoException{
         boolean estaenlista=false;
         for(int i=0;i<MAX_USUARIOS;i++){
-            if(usuarios[i]==u1){
-                estaenlista=true;
+            if(usuarios[i] != null &&usuarios[i].getNumeroSocio().equals(u1.getNumeroSocio())) {
+                estaenlista = true;
             }
         }
         if(estaenlista){
