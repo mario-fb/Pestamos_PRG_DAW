@@ -70,27 +70,49 @@ public class Main {
         int mes=Integer.parseInt(fechaSplit[1]);
         int anyo=Integer.parseInt(fechaSplit[2]);
         if(gestor.devolverLibro(codigoLibro, LocalDate.of(anyo,mes,dia))) {
-            gestor.devolverLibro(codigoLibro, LocalDate.of(anyo, mes, dia));
+            System.out.println("Libro devuelto");
+            System.out.println("Retraso: ");
         }
-      //  *******TERMINAR*******
 
     }
-        public static void consultarEstado(Scanner in, GestorBiblioteca gestor){
+
+    public static void consultarEstado(Scanner in, GestorBiblioteca gestor){
             System.out.println("Introduce el nombre de usuario");
             String nombre=in.nextLine();
             System.out.println("Introduce el codigo de socio");
             String codigoSocio=in.nextLine();
             Usuario usuario=gestor.buscarUsuario(codigoSocio);
+            System.out.println(usuario.toString());
+    }
 
-        }
+    public static void mostrarPrestamos(GestorBiblioteca gestor){
+            for (int i=0;i<200;i++){
+                if (gestor.getPrestamos()[i]!=null){
+                    System.out.println(gestor.getPrestamos()[i].toString());
+                }
+            }
+    }
+
+    public static void mostrarUsuariosSancionados(GestorBiblioteca gestor){
+            for(int i=0;i<50;i++){
+                if(gestor.getUsuarios()[i]!=null && gestor.getUsuarios()[i].estaSancionado()){
+                    System.out.println(gestor.getUsuarios()[i].toString());
+                }
+            }
+    }
+
+    public static void actualizarSanciones(GestorBiblioteca gestor, Usuario usuario){
+
+
+    }
 
     public static void main(String[] args) {
         GestorBiblioteca gestor=new GestorBiblioteca();
         Scanner in=new Scanner(System.in);
         int respuesta=0;
         do{
-
                 mostrarMenu();
+                try{
             try{
 
                 respuesta = seleccionarOpcion(in);
@@ -99,52 +121,76 @@ public class Main {
                 System.out.println("Debes seleccionar una opcion con un numero");
                 System.out.println("Presiona intro para continuar");
             }
-            switch (respuesta){
+            switch (respuesta) {
                 case 1:
-                   try{
-                       gestor.registrarUsuario(registrarNuevoUsuario(in));
-                       System.out.println("Usuario correctamente registrado");
-                       System.out.println("Presiona intro para continuar");
-                   }
-                   catch (UsuarioInvalidoException uie){
-                       System.out.println("Error "+uie.getMessage());
-                   }
-                   catch (UsuarioRepetidoException ure){
-                       System.out.println("Error "+ure.getMessage());
-                   }
-                   catch (NumberFormatException nfe){
-                       System.out.println("Tienes que poner fecha");
-                   }
-                   break;
+                    try {
+                        gestor.registrarUsuario(registrarNuevoUsuario(in));
+                        System.out.println("Usuario correctamente registrado");
+                        System.out.println("Presiona intro para continuar");
+                    } catch (UsuarioInvalidoException uie) {
+                        System.out.println("Error " + uie.getMessage());
+                        System.out.println("Presiona intro para continuar");
+                    } catch (UsuarioRepetidoException ure) {
+                        System.out.println("Error " + ure.getMessage());
+                        System.out.println("Presiona intro para continuar");
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Tienes que poner fecha");
+                        System.out.println("Presiona intro para continuar");
+                    }
+                    break;
                 case 2:
                     try {
                         hacerPrestamo(in, gestor);
-                        System.out.println("Prestamos realizado correctamente");
-                    }
-                    catch (PrestamoInvalidoException pie){
-                        System.out.println("Error "+pie.getMessage());
-                    }
-                    catch (UsuarioSancionadoException use){
-                        System.out.println("Error "+use.getMessage());
-                    }
-                    catch (LibroNoDisponibleException lnd){
-                        System.out.println("Error "+lnd.getMessage());
+                        System.out.println("Prestamo realizado correctamente");
+                        System.out.println("Presiona intro para continuar");
+                    } catch (PrestamoInvalidoException pie) {
+                        System.out.println("Error " + pie.getMessage());
+                        System.out.println("Presiona intro para continuar");
+                    } catch (UsuarioSancionadoException use) {
+                        System.out.println("Error " + use.getMessage());
+                        System.out.println("Presiona intro para continuar");
+                    } catch (LibroNoDisponibleException lnd) {
+                        System.out.println("Error " + lnd.getMessage());
+                        System.out.println("Presiona intro para continuar");
                     }
                     break;
 
                 case 3:
                     try {
                         devolverLibro(in, gestor);
-                        System.out.println("Devolucion realizada");
-                    }
-                    catch (PrestamoInvalidoException pie){
-                        System.out.println("Error "+pie.getMessage());
+                        System.out.println("Presiona intro para continuar");
+                    } catch (PrestamoInvalidoException pie) {
+                        System.out.println("Error " + pie.getMessage());
+                        System.out.println("Presiona intro para continuar");
                     }
                     break;
                 case 4:
+                    consultarEstado(in, gestor);
+                    System.out.println("Presiona intro para continuar");
+                    break;
+                case 5:
+                    mostrarPrestamos(gestor);
+                    System.out.println("Presiona intro para continuar");
+                    break;
+                case 6:
+                    mostrarUsuariosSancionados(gestor);
+                    System.out.println("Presiona intro para continuar");
+                    break;
+                case 7:
+
+                default:
+                    System.out.println("Elige una opcion del 1 al 8");
+                    break;
+            }
 
             }
+                catch (NumberFormatException nfe){
+                    System.out.println("No puedes no poner nada");
+                    System.out.println("Presiona intro para continuar");
+                }
             in.nextLine();
         }while(respuesta!=8);
+        System.out.println("Saliste del programa");
+
     }
 }

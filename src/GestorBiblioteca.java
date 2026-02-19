@@ -16,7 +16,7 @@ public class GestorBiblioteca {
 
     public void registrarUsuario(Usuario u1) throws UsuarioRepetidoException{
         boolean estaenlista=false;
-        for(int i=0;i<usuarios.length;i++){
+        for(int i=0;i<MAX_USUARIOS;i++){
             if(usuarios[i]==u1){
                 estaenlista=true;
             }
@@ -32,9 +32,9 @@ public class GestorBiblioteca {
 
     public Prestamo realizarPrestamo(Usuario u1, String codigoLibro, String titulo, LocalDate fechaPrestamo) throws PrestamoInvalidoException, UsuarioSancionadoException, LibroNoDisponibleException{
         boolean libroDisponlibe=true;
-        for (int i=0;i<prestamos.length;i++){
+        for (int i=0;i<MAX_PRESTAMOS;i++){
             if(prestamos[i]!=null) {
-                if (!(prestamos[i].getFechaDevolucionReal() == null) || prestamos[i].getCodigoLibro().equals(codigoLibro)) {
+                if (!(prestamos[i].getFechaDevolucionReal() == null) && prestamos[i].getCodigoLibro().equals(codigoLibro)) {
                     libroDisponlibe = false;
                 }
             }
@@ -64,11 +64,11 @@ public class GestorBiblioteca {
 
     public boolean devolverLibro(String codigoLibro, LocalDate fechaDevolucion) throws PrestamoInvalidoException{
         boolean libroEnLista=false;
-        for(int i=0;i<prestamos.length;i++){
+        for(int i=0;i<MAX_PRESTAMOS;i++){
             if(prestamos[i]!=null){
                 if(prestamos[i].getCodigoLibro().equals(codigoLibro)){
                     libroEnLista=true;
-                    if(fechaDevolucion.isBefore(prestamos[i].getFechaDevolucionPrevista())){
+                    if(fechaDevolucion.isBefore(prestamos[i].getFechaPrestamo())){
                         throw new PrestamoInvalidoException("La fecha de devolucion es anterior a la de prestamo");
                     }
                     else if(fechaDevolucion.isAfter(prestamos[i].getFechaDevolucionPrevista())){
@@ -90,8 +90,8 @@ public class GestorBiblioteca {
         Usuario aux =new Usuario();
         boolean encontrado=false;
         if(codigoSocio.matches("SOC[0-9]{5}")){
-            for (int i=0;i<usuarios.length;i++){
-                if(usuarios!=null) {
+            for (int i=0;i<MAX_USUARIOS;i++){
+                if(usuarios[i]!=null) {
                     if (usuarios[i].getNumeroSocio().matches(codigoSocio)) {
                         aux = usuarios[i];
                         encontrado=true;

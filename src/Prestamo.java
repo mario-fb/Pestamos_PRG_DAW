@@ -9,6 +9,10 @@ public class Prestamo {
     private LocalDate fechaDevolucionPrevista;
     private LocalDate fechaDevolucionReal;
 
+    public LocalDate getFechaPrestamo(){
+        return fechaPrestamo;
+    }
+
     public void validarCodigo()throws PrestamoInvalidoException{
         if(!(codigoLibro.matches("[A-Z]{3}[0-9]{4}"))){
             throw new PrestamoInvalidoException("Codigo del libro invalido");

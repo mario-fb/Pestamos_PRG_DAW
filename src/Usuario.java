@@ -11,7 +11,14 @@ public class Usuario {
     private LocalDate fechaFinSancion;
 
     public void aniadirDiasSancion(long dias){
-        fechaFinSancion.plusDays(dias);
+
+        if(!sancionado){
+            fechaFinSancion = LocalDate.now().plusDays(dias);
+        }
+        else{
+            fechaFinSancion = fechaFinSancion.plusDays(dias);
+        }
+        sancionado = true;
     }
     public String getNumeroSocio(){
         return numeroSocio;
@@ -84,9 +91,12 @@ public class Usuario {
 
     @Override
     public String toString() {
-        String mensaje= "Nombre: "+nombre+" email: "+email+" numero de socio: "+numeroSocio+" fecha de registro: "+fechaRegistro+" estado de la sancion: "+estaSancionado();
+        String mensaje= "Nombre: "+nombre+" email: "+email+" numero de socio: "+numeroSocio+" fecha de registro: "+fechaRegistro+" estado de la sancion: ";
         if(estaSancionado()){
             mensaje+=" Su sancion acaba en la fecha: "+fechaFinSancion;
+        }
+        else{
+            mensaje+="El usuario no esta sancionado";
         }
         return mensaje;
     }
