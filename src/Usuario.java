@@ -88,6 +88,7 @@ public class Usuario {
 
     public void levantarSancion(){
         sancionado=false;
+        fechaFinSancion=null;
     }
     public boolean estaSancionado(){
         return sancionado;

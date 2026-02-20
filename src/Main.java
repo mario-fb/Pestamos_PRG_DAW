@@ -1,4 +1,5 @@
 import javax.sound.midi.Soundbank;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -46,7 +47,7 @@ public class Main {
         String titulo=in.nextLine();
         System.out.println("Escribe el numero de socio: ");
         String numSocio=in.nextLine();
-        for(int i=0;i< gestor.numeroUsuarios;i++){
+        for(int i=0;i< gestor.getNumeroUsuarios();i++){
             if(gestor.getUsuarios()[i].getNumeroSocio().equals(numSocio)){
                 usuario= gestor.getUsuarios()[i];
             }
@@ -82,24 +83,27 @@ public class Main {
     }
 
     public static void consultarEstado(Scanner in, GestorBiblioteca gestor){
-            System.out.println("Introduce el nombre de usuario");
-            String nombre=in.nextLine();
             System.out.println("Introduce el codigo de socio");
             String codigoSocio=in.nextLine();
             Usuario usuario=gestor.buscarUsuario(codigoSocio);
-            System.out.println(usuario.toString());
+            if(usuario!=null) {
+                System.out.println(usuario.toString());
+            }
+            else{
+                System.out.println("Usuario no encontrado");
+            }
     }
 
     public static void mostrarPrestamos(GestorBiblioteca gestor){
-            for (int i=0;i<200;i++){
-                if (gestor.getPrestamos()[i]!=null && gestor.getPrestamos()[i].getDevuelto()){
+            for (int i=0;i<gestor.getNumeroPrestamos();i++){
+                if (gestor.getPrestamos()[i]!=null && !gestor.getPrestamos()[i].getDevuelto()){
                     System.out.println(gestor.getPrestamos()[i].toString());
                 }
             }
     }
 
     public static void mostrarUsuariosSancionados(GestorBiblioteca gestor){
-            for(int i=0;i<50;i++){
+            for(int i=0;i<gestor.getNumeroUsuarios();i++){
                 if(gestor.getUsuarios()[i]!=null && gestor.getUsuarios()[i].estaSancionado()){
                     System.out.println(gestor.getUsuarios()[i].toString());
                 }
@@ -107,7 +111,7 @@ public class Main {
     }
 
     public static void actualizarSanciones(GestorBiblioteca gestor){
-        for (int i=0;i<50;i++){
+        for (int i=0;i<gestor.getNumeroUsuarios();i++){
             if(gestor.getUsuarios()[i]!=null && gestor.getUsuarios()[i].estaSancionado()){
                 if (gestor.getUsuarios()[i].getFechaFinSancion() != null &&
                         gestor.getUsuarios()[i].getFechaFinSancion().isBefore(LocalDate.now())) {
@@ -123,6 +127,7 @@ public class Main {
         Scanner in=new Scanner(System.in);
         int respuesta=0;
         do{
+                respuesta=0;
                 mostrarMenu();
                 try{
             try{
@@ -131,82 +136,85 @@ public class Main {
             }
             catch (NumberFormatException nfe){
                 System.out.println("Debes seleccionar una opcion con un numero");
-                System.out.println("Presiona intro para continuar");
+
             }
             switch (respuesta) {
                 case 1:
                     try {
                         gestor.registrarUsuario(registrarNuevoUsuario(in, gestor));
                         System.out.println("Usuario correctamente registrado");
-                        System.out.println("Presiona intro para continuar");
                     } catch (UsuarioInvalidoException uie) {
                         System.out.println("Error " + uie.getMessage());
-                        System.out.println("Presiona intro para continuar");
                     } catch (UsuarioRepetidoException ure) {
                         System.out.println("Error " + ure.getMessage());
-                        System.out.println("Presiona intro para continuar");
-                    } catch (NumberFormatException nfe) {
-                        System.out.println("Tienes que poner fecha");
-                        System.out.println("Presiona intro para continuar");
+                    }
+                    catch (DateTimeException dte){
+                        System.out.println("Has puesto una fecha que no es valida");
+                    }
+                    catch (ArrayIndexOutOfBoundsException aiob){
+                        System.out.println("No has puesto la fecha en el formato indicado");
                     }
                     break;
                 case 2:
                     try {
                         hacerPrestamo(in, gestor);
                         System.out.println("Prestamo realizado correctamente");
-                        System.out.println("Presiona intro para continuar");
                     } catch (PrestamoInvalidoException pie) {
                         System.out.println("Error " + pie.getMessage());
-                        System.out.println("Presiona intro para continuar");
                     } catch (UsuarioSancionadoException use) {
                         System.out.println("Error " + use.getMessage());
-                        System.out.println("Presiona intro para continuar");
                     } catch (LibroNoDisponibleException lnd) {
                         System.out.println("Error " + lnd.getMessage());
-                        System.out.println("Presiona intro para continuar");
+                    }
+                    catch (DateTimeException dte){
+                        System.out.println("Has puesto una fecha que no es valida");
+                    }catch (ArrayIndexOutOfBoundsException aiob){
+                        System.out.println("No has puesto la fecha en el formato indicado");
                     }
                     break;
 
                 case 3:
                     try {
                         devolverLibro(in, gestor);
-                        System.out.println("Presiona intro para continuar");
+
                     } catch (PrestamoInvalidoException pie) {
                         System.out.println("Error " + pie.getMessage());
-                        System.out.println("Presiona intro para continuar");
+
+                    }catch (ArrayIndexOutOfBoundsException aiob){
+                        System.out.println("No has puesto la fecha en el formato indicado");
                     }
                     break;
                 case 4:
                     consultarEstado(in, gestor);
-                    System.out.println("Presiona intro para continuar");
+
                     break;
                 case 5:
                     mostrarPrestamos(gestor);
-                    System.out.println("Presiona intro para continuar");
+
                     break;
                 case 6:
                     mostrarUsuariosSancionados(gestor);
-                    System.out.println("Presiona intro para continuar");
+
                     break;
                 case 7:
                     actualizarSanciones(gestor);
                     System.out.println("Sanciones actualizadas");
-                    System.out.println("Presiona intro para continuar");
+
                     break;
 
-                default:
-                    System.out.println("Elige una opcion del 1 al 8");
-                    break;
+
             }
 
             }
                 catch (NumberFormatException nfe){
                     System.out.println("No has escrito correctamente lo que se pedia");
-                    System.out.println("Presiona intro para continuar");
                 }
-            in.nextLine();
+                if(respuesta!=8) {
+                    System.out.println("Presiona intro para continuar");
+                    in.nextLine();
+                }
         }while(respuesta!=8);
-        System.out.println("Saliste del programa");
+        System.out.println("Saliendo del programa......");
 
     }
 }

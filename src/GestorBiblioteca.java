@@ -5,9 +5,19 @@ public class GestorBiblioteca {
     private final static int MAX_USUARIOS=50;
     private final static int MAX_PRESTAMOS=200;
     Usuario[] usuarios=new Usuario[MAX_USUARIOS];
+    private int numeroUsuarios;
+    private int numeroPrestamos;
+
+
+    public int getNumeroUsuarios() {
+        return numeroUsuarios;
+    }
+
+    public int getNumeroPrestamos() {
+        return numeroPrestamos;
+    }
+
     Prestamo[] prestamos=new Prestamo[MAX_PRESTAMOS];
-    int numeroUsuarios;
-    int numeroPrestamos;
 
 
     public GestorBiblioteca(){
@@ -36,7 +46,7 @@ public class GestorBiblioteca {
         boolean libroDisponlibe=true;
         for (int i=0;i<MAX_PRESTAMOS;i++){
             if(prestamos[i]!=null) {
-                if (!(prestamos[i].getFechaDevolucionReal() == null) && prestamos[i].getCodigoLibro().equals(codigoLibro)) {
+                if ((prestamos[i].getFechaDevolucionReal() == null) && prestamos[i].getCodigoLibro().equals(codigoLibro)) {
                     libroDisponlibe = false;
                 }
             }
