@@ -112,7 +112,7 @@ public class Main {
 
     public static void actualizarSanciones(GestorBiblioteca gestor){
         for (int i=0;i<gestor.getNumeroUsuarios();i++){
-            if(gestor.getUsuarios()[i]!=null && gestor.getUsuarios()[i].estaSancionado()){
+            if(gestor.getUsuarios()[i]!=null){
                 if (gestor.getUsuarios()[i].getFechaFinSancion() != null &&
                         gestor.getUsuarios()[i].getFechaFinSancion().isBefore(LocalDate.now())) {
                     gestor.getUsuarios()[i].levantarSancion();

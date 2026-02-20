@@ -91,15 +91,27 @@ public class Usuario {
         fechaFinSancion=null;
     }
     public boolean estaSancionado(){
-        return sancionado;
+        if(!sancionado){
+            return  false;
+        }
+        else if(fechaFinSancion!=null && fechaFinSancion.isBefore(LocalDate.now())){
+            levantarSancion();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     @Override
     public String toString() {
         String mensaje= "Nombre: "+nombre+" email: "+email+" numero de socio: "+numeroSocio+" fecha de registro: "+fechaRegistro+" estado de la sancion: ";
         if(estaSancionado()){
+            if(fechaFinSancion!=null){
             mensaje+=" Su sancion acaba en la fecha: "+fechaFinSancion;
+            }
         }
+
         else{
             mensaje+="El usuario no esta sancionado";
         }
